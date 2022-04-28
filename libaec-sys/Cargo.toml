@@ -1,8 +1,14 @@
 [package]
 name = "libaec-sys"
 version = "0.1.0"
-authors = ["Aaron Griffith <aargri@gmail.com>"]
 edition = "2018"
+
+description = "Low-level Rust bindings for libaec."
+authors = ["Aaron Griffith <aargri@gmail.com>"]
+repository = "https://github.com/agrif/acres"
+documentation = "https://docs.rs/libaec-sys"
+readme = "README.md"
+license = "MIT"
 
 [build-dependencies]
 cmake = "0.1"

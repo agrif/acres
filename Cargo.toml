@@ -1,8 +1,14 @@
 [package]
 name = "acres"
 version = "0.1.0"
-authors = ["Aaron Griffith <aargri@gmail.com>"]
 edition = "2018"
+
+description = "Rust bindings for libaec."
+authors = ["Aaron Griffith <aargri@gmail.com>"]
+repository = "https://github.com/agrif/acres"
+documentation = "https://docs.rs/acres"
+readme = "README.md"
+license = "MIT"
 
 [workspace]
 members = [".", "libaec-sys"]
