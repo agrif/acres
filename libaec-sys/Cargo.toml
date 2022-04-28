@@ -1,0 +1,11 @@
+[package]
+name = "libaec-sys"
+version = "0.1.0"
+authors = ["Aaron Griffith <aargri@gmail.com>"]
+edition = "2018"
+
+[build-dependencies]
+cmake = "0.1"
+
+[dependencies]
+libc = "0.2"

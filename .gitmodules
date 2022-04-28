@@ -1,0 +1,3 @@
+[submodule "libaec-sys/libaec"]
+	path = libaec-sys/libaec
+	url = https://github.com/erget/libaec

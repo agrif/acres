@@ -1,0 +1,13 @@
+[package]
+name = "acres"
+version = "0.1.0"
+authors = ["Aaron Griffith <aargri@gmail.com>"]
+edition = "2018"
+
+[workspace]
+members = [".", "libaec-sys"]
+
+[dependencies]
+bitflags = "1.2"
+libaec-sys = { path = "libaec-sys" }
+libc = "0.2"
