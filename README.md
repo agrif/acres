@@ -7,7 +7,7 @@
 Rust bindings for [`libaec`](https://github.com/erget/libaec).
 
 `libaec` implements Golomb-Rice coding as defined in the Space Data
-System Standard documents \[121.0-B-2\]\[1\] and \[120.0-G-2\]\[2\].
+System Standard documents 121.0-B-2 and 120.0-G-2.
 
 ## License
 
