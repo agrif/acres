@@ -21,7 +21,8 @@ impl Buffer for [MaybeUninit<u8>] {
     }
 
     unsafe fn write_data(&mut self, amt: usize) -> &mut [u8] {
-        std::mem::transmute::<_, &mut [u8]>(&mut self[..amt])
+        // Copied from std::mem::MaybeUninit::slice_assume_init_mut, which is currently unstable
+        &mut *(&mut self[..amt] as *mut Self as *mut [u8])
     }
 }
 
