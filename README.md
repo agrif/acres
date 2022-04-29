@@ -1,6 +1,6 @@
 # acres
 
-[![build status](https://api.travis-ci.com/agrif/acres.svg?branch=master)](https://travis-ci.com/github/agrif/acres)
+[![build status](https://github.com/agrif/acres/actions/workflows/build.yaml/badge.svg?branch=master)](https://github.com/agrif/acres/actions/workflows/build.yaml)
 [![crates.io](https://img.shields.io/crates/v/acres.svg)](https://crates.io/crates/acres)
 [![docs.rs](https://docs.rs/acres/badge.svg)](https://docs.rs/acres)
 
