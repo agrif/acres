@@ -117,7 +117,7 @@ impl Configuration {
         let start = output.len();
         let mut enc = self.encoder()?;
         loop {
-            let flush = input.len() == 0;
+            let flush = input.is_empty();
             if flush {
                 // give us a bit extra to work with, because we
                 // cannot tell when flushing is done
@@ -129,7 +129,7 @@ impl Configuration {
                 output.reserve(DEFAULT_BUFFER_SIZE);
                 continue;
             }
-            if input.len() == 0 && flush {
+            if input.is_empty() && flush {
                 break;
             }
         }
@@ -161,7 +161,7 @@ impl Configuration {
         loop {
             let (rest, _) = dec.decode_vec(input, output, false)?;
             input = rest;
-            if input.len() == 0 {
+            if input.is_empty() {
                 break;
             }
             if output.len() == output.capacity() {

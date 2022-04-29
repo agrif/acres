@@ -112,7 +112,7 @@ where
         let mut produced = 0;
         while produced < buf.len() {
             let input = self.inner.fill_buf()?;
-            if input.len() == 0 {
+            if input.is_empty() {
                 self.encdec.end()?;
                 break;
             }
@@ -139,7 +139,7 @@ where
             let (rest, out) = self
                 .encdec
                 .encode_vec(&buf[consumed..], &mut self.buffer, false)?;
-            if out.len() > 0 {
+            if !out.is_empty() {
                 self.inner.write(out)?;
             }
             consumed = buf.len() - rest.len();
@@ -153,7 +153,7 @@ where
         }
         self.buffer.clear();
         let (_, out) = self.encdec.encode_vec(&[], &mut self.buffer, true)?;
-        if out.len() > 0 {
+        if !out.is_empty() {
             self.inner.write(out)?;
         }
         self.encdec.end()?;
@@ -175,7 +175,7 @@ where
             let (rest, out) = self
                 .encdec
                 .decode_vec(&buf[consumed..], &mut self.buffer, false)?;
-            if out.len() > 0 {
+            if !out.is_empty() {
                 self.inner.write(out)?;
             }
             consumed = buf.len() - rest.len();
