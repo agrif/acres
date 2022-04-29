@@ -2,6 +2,11 @@ use std::mem::MaybeUninit;
 
 pub trait Buffer {
     fn write_info(&mut self) -> (*mut u8, usize);
+
+    /// # Safety
+    ///
+    /// The returned slice of bytes is uninitialized, and should be filled
+    /// immediately before being used elsewhere.
     unsafe fn write_data(&mut self, amt: usize) -> &mut [u8];
 }
 
