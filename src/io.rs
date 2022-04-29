@@ -140,7 +140,7 @@ where
                 .encdec
                 .encode_vec(&buf[consumed..], &mut self.buffer, false)?;
             if !out.is_empty() {
-                self.inner.write(out)?;
+                self.inner.write_all(out)?;
             }
             consumed = buf.len() - rest.len();
         }
@@ -154,7 +154,7 @@ where
         self.buffer.clear();
         let (_, out) = self.encdec.encode_vec(&[], &mut self.buffer, true)?;
         if !out.is_empty() {
-            self.inner.write(out)?;
+            self.inner.write_all(out)?;
         }
         self.encdec.end()?;
         self.inner.flush()
@@ -176,7 +176,7 @@ where
                 .encdec
                 .decode_vec(&buf[consumed..], &mut self.buffer, false)?;
             if !out.is_empty() {
-                self.inner.write(out)?;
+                self.inner.write_all(out)?;
             }
             consumed = buf.len() - rest.len();
         }
