@@ -10,7 +10,7 @@ Rust bindings for [*libaec*][].
 
 *libaec* implements [Golomb-Rice][] coding as defined in the
 Consultative Committee for Space Data Systems (CCSDS) standard
-documents [121.0-B-3][].
+document [121.0-B-3][].
 
  [Golomb-Rice]: http://en.wikipedia.org/wiki/Golomb_coding
  [121.0-B-3]: https://public.ccsds.org/Pubs/121x0b3.pdf
