@@ -99,6 +99,22 @@ impl Configuration {
         })
     }
 
+    pub fn bits_per_sample(&self) -> usize {
+        self.0.bits_per_sample as usize
+    }
+
+    pub fn block_size(&self) -> usize {
+        self.0.block_size as usize
+    }
+
+    pub fn rsi(&self) -> usize {
+        self.0.rsi as usize
+    }
+
+    pub fn flags(&self) -> Flags {
+        Flags::from_bits_truncate(self.0.flags as u32)
+    }
+
     pub fn encoder(&self) -> Result<Encoder, Error> {
         Encoder::new(aec_stream { ..self.0 })
     }
