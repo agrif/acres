@@ -1,5 +1,3 @@
-use std::mem::MaybeUninit;
-
 use libaec_sys::*;
 use libc::{c_int, c_uint, size_t};
 
@@ -123,7 +121,7 @@ impl Configuration {
                 // cannot tell when flushing is done
                 output.reserve(DEFAULT_BUFFER_SIZE);
             }
-            let (rest, _) = enc.encode_vec(input, output, flush)?;
+            let (rest, _) = enc.encode(input, output, flush)?;
             input = rest;
             if output.len() == output.capacity() {
                 output.reserve(DEFAULT_BUFFER_SIZE);
@@ -159,7 +157,7 @@ impl Configuration {
         let start = output.len();
         let mut dec = self.decoder()?;
         loop {
-            let (rest, _) = dec.decode_vec(input, output, false)?;
+            let (rest, _) = dec.decode(input, output, false)?;
             input = rest;
             if input.is_empty() {
                 break;
@@ -210,7 +208,7 @@ impl Encoder {
         self.0.state.is_null()
     }
 
-    pub fn encode_generic<'i, 'o, B>(
+    pub fn encode<'i, 'o, B>(
         &mut self,
         input: &'i [u8],
         output: &'o mut B,
@@ -237,33 +235,6 @@ impl Encoder {
                 )
             })
         }
-    }
-
-    pub fn encode<'i, 'o>(
-        &mut self,
-        input: &'i [u8],
-        output: &'o mut [u8],
-        flush: bool,
-    ) -> Result<(&'i [u8], &'o mut [u8]), Error> {
-        self.encode_generic(input, output, flush)
-    }
-
-    pub fn encode_uninit<'i, 'o>(
-        &mut self,
-        input: &'i [u8],
-        output: &'o mut [MaybeUninit<u8>],
-        flush: bool,
-    ) -> Result<(&'i [u8], &'o mut [u8]), Error> {
-        self.encode_generic(input, output, flush)
-    }
-
-    pub fn encode_vec<'i, 'o>(
-        &mut self,
-        input: &'i [u8],
-        output: &'o mut Vec<u8>,
-        flush: bool,
-    ) -> Result<(&'i [u8], &'o mut [u8]), Error> {
-        self.encode_generic(input, output, flush)
     }
 }
 
@@ -296,7 +267,7 @@ impl Decoder {
         self.0.state.is_null()
     }
 
-    pub fn decode_generic<'i, 'o, B>(
+    pub fn decode<'i, 'o, B>(
         &mut self,
         input: &'i [u8],
         output: &'o mut B,
@@ -323,33 +294,6 @@ impl Decoder {
                 )
             })
         }
-    }
-
-    pub fn decode<'i, 'o>(
-        &mut self,
-        input: &'i [u8],
-        output: &'o mut [u8],
-        flush: bool,
-    ) -> Result<(&'i [u8], &'o mut [u8]), Error> {
-        self.decode_generic(input, output, flush)
-    }
-
-    pub fn decode_uninit<'i, 'o>(
-        &mut self,
-        input: &'i [u8],
-        output: &'o mut [MaybeUninit<u8>],
-        flush: bool,
-    ) -> Result<(&'i [u8], &'o mut [u8]), Error> {
-        self.decode_generic(input, output, flush)
-    }
-
-    pub fn decode_vec<'i, 'o>(
-        &mut self,
-        input: &'i [u8],
-        output: &'o mut Vec<u8>,
-        flush: bool,
-    ) -> Result<(&'i [u8], &'o mut [u8]), Error> {
-        self.decode_generic(input, output, flush)
     }
 }
 
@@ -381,12 +325,12 @@ mod test {
         let mut decompressed = Vec::with_capacity(data.len() + 1);
         decompressed.push(42);
 
-        let (unused, _) = enc.encode_vec(data, &mut compressed, true).unwrap();
+        let (unused, _) = enc.encode(data, &mut compressed, true).unwrap();
         assert_eq!(unused.len(), 0);
         enc.end().unwrap();
 
         let (unused, _) = dec
-            .decode_vec(&compressed[1..], &mut decompressed, true)
+            .decode(&compressed[1..], &mut decompressed, true)
             .unwrap();
         assert_eq!(unused.len(), 0);
         dec.end().unwrap();

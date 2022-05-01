@@ -1,7 +1,5 @@
 use crate::Buffer;
 
-use std::mem::MaybeUninit;
-
 use libaec_sys::szlib::*;
 use libc::{c_int, c_void, size_t};
 
@@ -80,11 +78,7 @@ impl Parameters {
         })
     }
 
-    pub fn compress_generic<'a, B>(
-        &mut self,
-        source: &[u8],
-        dest: &'a mut B,
-    ) -> Result<&'a mut [u8], Error>
+    pub fn compress<'a, B>(&mut self, source: &[u8], dest: &'a mut B) -> Result<&'a mut [u8], Error>
     where
         B: Buffer + ?Sized,
     {
@@ -100,31 +94,7 @@ impl Parameters {
         }
     }
 
-    pub fn compress<'a>(
-        &mut self,
-        source: &[u8],
-        dest: &'a mut [u8],
-    ) -> Result<&'a mut [u8], Error> {
-        self.compress_generic(source, dest)
-    }
-
-    pub fn compress_uninit<'a>(
-        &mut self,
-        source: &[u8],
-        dest: &'a mut [MaybeUninit<u8>],
-    ) -> Result<&'a mut [u8], Error> {
-        self.compress_generic(source, dest)
-    }
-
-    pub fn compress_vec<'a>(
-        &mut self,
-        source: &[u8],
-        dest: &'a mut Vec<u8>,
-    ) -> Result<&'a mut [u8], Error> {
-        self.compress_generic(source, dest)
-    }
-
-    pub fn decompress_generic<'a, B>(
+    pub fn decompress<'a, B>(
         &mut self,
         source: &[u8],
         dest: &'a mut B,
@@ -142,30 +112,6 @@ impl Parameters {
                 SZ_BufftoBuffDecompress(destptr, &mut destlen, sourceptr, sourcelen, &mut self.0);
             Error::from_int(result).map(move |_| dest.write_data(destlen as usize))
         }
-    }
-
-    pub fn decompress<'a>(
-        &mut self,
-        source: &[u8],
-        dest: &'a mut [u8],
-    ) -> Result<&'a mut [u8], Error> {
-        self.decompress_generic(source, dest)
-    }
-
-    pub fn decompress_uninit<'a>(
-        &mut self,
-        source: &[u8],
-        dest: &'a mut [MaybeUninit<u8>],
-    ) -> Result<&'a mut [u8], Error> {
-        self.decompress_generic(source, dest)
-    }
-
-    pub fn decompress_vec<'a>(
-        &mut self,
-        source: &[u8],
-        dest: &'a mut Vec<u8>,
-    ) -> Result<&'a mut [u8], Error> {
-        self.decompress_generic(source, dest)
     }
 
     pub fn options(&self) -> Options {
@@ -207,11 +153,9 @@ mod test {
             data.len(),
         );
 
-        assert!(c.compress_vec(data, &mut compressed).is_ok());
+        assert!(c.compress(data, &mut compressed).is_ok());
         assert_eq!(compressed[0], 42);
-        assert!(c
-            .decompress_vec(&compressed[1..], &mut decompressed)
-            .is_ok());
+        assert!(c.decompress(&compressed[1..], &mut decompressed).is_ok());
         assert_eq!(decompressed[0], 42);
         assert_eq!(&decompressed[1..], data);
     }

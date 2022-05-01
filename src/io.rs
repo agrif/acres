@@ -138,7 +138,7 @@ where
             self.buffer.clear();
             let (rest, out) = self
                 .encdec
-                .encode_vec(&buf[consumed..], &mut self.buffer, false)?;
+                .encode(&buf[consumed..], &mut self.buffer, false)?;
             if !out.is_empty() {
                 self.inner.write_all(out)?;
             }
@@ -152,7 +152,7 @@ where
             return Ok(());
         }
         self.buffer.clear();
-        let (_, out) = self.encdec.encode_vec(&[], &mut self.buffer, true)?;
+        let (_, out) = self.encdec.encode(&[], &mut self.buffer, true)?;
         if !out.is_empty() {
             self.inner.write_all(out)?;
         }
@@ -174,7 +174,7 @@ where
             self.buffer.clear();
             let (rest, out) = self
                 .encdec
-                .decode_vec(&buf[consumed..], &mut self.buffer, false)?;
+                .decode(&buf[consumed..], &mut self.buffer, false)?;
             if !out.is_empty() {
                 self.inner.write_all(out)?;
             }
