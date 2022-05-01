@@ -5,8 +5,9 @@ pub trait Buffer {
 
     /// # Safety
     ///
-    /// The returned slice of bytes is uninitialized, and should be filled
-    /// immediately before being used elsewhere.
+    /// The returned slice of bytes must have been previously
+    /// initialized by calling [`Buffer::write_info`] and writing
+    /// `amt` bytes to the returned pointer.
     unsafe fn write_data(&mut self, amt: usize) -> &mut [u8];
 }
 
@@ -22,7 +23,7 @@ impl Buffer for [u8] {
 
 impl Buffer for [MaybeUninit<u8>] {
     fn write_info(&mut self) -> (*mut u8, usize) {
-        (self.as_mut_ptr() as *mut u8, self.len())
+        (self[0].as_mut_ptr(), self.len())
     }
 
     unsafe fn write_data(&mut self, amt: usize) -> &mut [u8] {
