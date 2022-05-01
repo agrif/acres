@@ -167,6 +167,22 @@ impl Parameters {
     ) -> Result<&'a mut [u8], Error> {
         self.decompress_generic(source, dest)
     }
+
+    pub fn options(&self) -> Options {
+        Options::from_bits_truncate(self.0.options_mask as u32)
+    }
+
+    pub fn bits_per_pixel(&self) -> usize {
+        self.0.bits_per_pixel as usize
+    }
+
+    pub fn pixels_per_block(&self) -> usize {
+        self.0.pixels_per_block as usize
+    }
+
+    pub fn pixels_per_scanline(&self) -> usize {
+        self.0.pixels_per_scanline as usize
+    }
 }
 
 #[cfg(test)]
