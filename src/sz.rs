@@ -61,9 +61,9 @@ impl From<Error> for std::io::Error {
 }
 
 #[derive(Clone, Debug)]
-pub struct Parameters(SZ_com_t);
+pub struct Sz(SZ_com_t);
 
-impl Parameters {
+impl Sz {
     pub fn new(
         options: Options,
         bits_per_pixel: usize,
@@ -133,7 +133,7 @@ impl Parameters {
 
 #[cfg(test)]
 mod test {
-    use super::{Options, Parameters};
+    use super::{Options, Sz};
 
     #[test]
     fn round_trip() {
@@ -146,7 +146,7 @@ mod test {
         let mut decompressed = Vec::with_capacity(data.len() + 1);
         decompressed.push(42);
 
-        let mut c = Parameters::new(
+        let mut c = Sz::new(
             Options::ALLOW_K13 | Options::MSB | Options::NN,
             8,
             pixels_per_block,
