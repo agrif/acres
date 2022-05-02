@@ -1,4 +1,15 @@
-/// # Adaptive Entropy Coding Library
+//! This crate provides low-level bindings to [libaec][], the Adaptive
+//! Entropy Coding library.
+//!
+//! [libaec]: https://gitlab.dkrz.de/k202009/libaec
+//!
+//! Libaec implements extended Golomb-Rice coding as defined in the
+//! CCSDS recommended standard [121.0-B-3][]. The library covers the
+//! adaptive entropy coder and the preprocessor discussed in sections
+//! 1 to 5.2.6 of the standard.
+//!
+//! [121.0-B-3]: https://public.ccsds.org/Pubs/121x0b3.pdf
+
 use libc::{c_int, c_uchar, c_uint, size_t};
 
 pub mod szlib;
